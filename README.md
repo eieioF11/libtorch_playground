@@ -24,3 +24,7 @@ make
 cd build
 ./libtorch_ex
 ```
+
+## mem
+- https://pytorch.org/cppdocs/installing.html
+- https://pytorch.org/docs/stable/cuda.html

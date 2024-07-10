@@ -23,6 +23,9 @@
 
 int main()
 {
+  std::cout << "cuda is available:" << torch::cuda::is_available() << std::endl;
+  std::cout << "cuda device count:" << torch::cuda::device_count() << std::endl;
+  std::cout << std::endl;
   torch::Tensor x = torch::full({3, 3}, 1.5, torch::TensorOptions().dtype(torch::kFloat));
   std::cout << x << std::endl;
   return 0;
