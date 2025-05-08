@@ -2,14 +2,9 @@
 libtorchの勉強用
 
 ## 環境構築
+- https://pytorch.org/get-started/locally/
 ```bash
-cd
-git clone https://github.com/pytorch/pytorch
-cd pytorch
-git submodule update --init --recursive
-python3 setup.py build
-mkdir build_libtorch && cd build_libtorch
-python3 ../tools/build_libtorch.py
+pip3 install torch torchvision torchaudio
 ```
 
 ## build
@@ -28,3 +23,4 @@ cd build
 ## mem
 - https://pytorch.org/cppdocs/installing.html
 - https://pytorch.org/docs/stable/cuda.html
+- https://qiita.com/ukyoda/items/629fb67d670cf7e8808a

@@ -4,8 +4,15 @@ project(libtorch_ex)
 add_compile_options(-O3)
 add_compile_options(-pg)
 
-set(Caffe2_DIR "$ENV{HOME}/pytorch/torch/share/cmake/Caffe2")
-set(Torch_DIR "$ENV{HOME}/pytorch/torch/share/cmake/Torch")
+if (NOT PYTHON_EXECUTABLE)
+    set(PYTHON_EXECUTABLE "python3")
+endif()
+
+# Pytorchのライブラリのcmake_prefix_pathを取得
+execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import torch; print(torch.utils.cmake_prefix_path, end='')" OUTPUT_VARIABLE pytorch_path)
+list(APPEND CMAKE_PREFIX_PATH "${pytorch_path}") # CMAKE_PREFIX_PATHに追加
+
+# libtorch find
 find_package(Torch REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(Python3 COMPONENTS Interpreter Development)
