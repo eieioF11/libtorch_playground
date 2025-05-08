@@ -26,7 +26,10 @@ namespace Neuralnetworks {
       bias   = register_parameter("b", torch::randn(out));
     };
 
-    torch::Tensor forward(const torch::Tensor& input);
+    torch::Tensor forward(const torch::Tensor& input) {
+      return at::add(matmul(input, this->weight), this->bias); //+ this->bias;
+    }
+
     torch::Tensor weight, bias;
   };
   TORCH_MODULE(Linear);
@@ -45,7 +48,15 @@ namespace Neuralnetworks {
         register_module("linear_" + std::to_string(i), this->linears_[i]);
       }
     };
-    torch::Tensor forward(const torch::Tensor& input);
+    torch::Tensor forward(const torch::Tensor& input) {
+      torch::Tensor x = input.clone();
+      for (int i = 0; i < this->numlayers - 1; i++) {
+        x = torch::tanh(this->linears_.at(i)->forward(x));
+      }
+      x = this->linears_.at(this->numlayers - 1)->forward(x);
+
+      return at::sum(x, 0);
+    }
 
   private:
     std::vector<Linear> linears_;
@@ -53,20 +64,6 @@ namespace Neuralnetworks {
   };
   TORCH_MODULE(DenseNet);
 } // namespace Neuralnetworks
-
-torch::Tensor Neuralnetworks::LinearImpl::forward(const torch::Tensor& input) {
-  return at::add(matmul(input, this->weight), this->bias); //+ this->bias;
-}
-
-torch::Tensor Neuralnetworks::DenseNetImpl::forward(const torch::Tensor& input) {
-  torch::Tensor x = input.clone();
-  for (int i = 0; i < this->numlayers - 1; i++) {
-    x = torch::tanh(this->linears_.at(i)->forward(x));
-  }
-  x = this->linears_.at(this->numlayers - 1)->forward(x);
-
-  return at::sum(x, 0);
-}
 
 int main() {
   std::cout << "cuda is available:" << torch::cuda::is_available() << std::endl;

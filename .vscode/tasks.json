@@ -8,7 +8,7 @@
             "type": "process",
             "command": "make",
             "options": {
-                "cwd": "${workspaceFolder}/dataset_gen/build/"
+                "cwd": "${workspaceFolder}/build/"
             },
             "problemMatcher": {
                 "base": "$gcc"
